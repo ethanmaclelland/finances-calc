@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Rental Property Finance Tracker</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            background-color: #f5f5f5;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .save-section {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .save-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .save-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .save-btn.export {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .save-btn.import {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .save-btn.print {
+            background-color: #8e44ad;
+            color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #3498db;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            background-color: #ecf0f1;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+            font-size: 12px;
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .overview-table th {
+            background-color: #3498db;
+        }
+        
+        .business-table th {
+            background-color: #8e44ad;
+        }
+        
+        .income-row {
+            background-color: #d5f4e6;
+        }
+        
+        .expense-row {
+            background-color: #fadbd8;
+        }
+        
+        .category-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .total-row {
+            background-color: #d6eaf8;
+            font-weight: bold;
+        }
+        
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        
+        input[type="text"] {
+            text-align: left;
+        }
+        
+        select {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .expense-input-group {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .expense-input-group input {
+            flex: 2;
+            min-width: 60px;
+        }
+        
+        .expense-input-group select {
+            flex: 1;
+            min-width: 70px;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .card h3 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+        
+        .card .amount {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .property-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .business-header {
+            background-color: #8e44ad;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .notes-section {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 80px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                margin: 5px;
+                font-size: 13px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                padding: 12px;
+                font-size: 14px;
+                border-radius: 5px;
+                margin-bottom: 2px;
+            }
+            
+            .summary-cards {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 6px 4px;
+            }
+            
+            input[type="number"], input[type="text"] {
+                padding: 10px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            select {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .expense-input-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .expense-input-group input,
+            .expense-input-group select {
+                flex: none;
+            }
+            
+            /* Make overview table scrollable on mobile */
+            .table-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .save-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .save-btn {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 8px;
+                margin: 2px;
+            }
+            
+            h1 {
+                font-size: 1.2em;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            .card h3 {
+                font-size: 13px;
+            }
+            
+            .card .amount {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Comprehensive Rental Property Finance Tracker</h1>
+        
+        <!-- Save/Load Section -->
+        <div class="save-section">
+            <h3>💾 Save & Backup Your Data</h3>
+            <p><strong>Important:</strong> Data is stored in your browser only. Use these options to backup your work!</p>
+            <div class="save-buttons">
+                <button class="save-btn export" onclick="exportData()">📁 Export Data</button>
+                <button class="save-btn import" onclick="document.getElementById('importFile').click()">📂 Import Data</button>
+                <button class="save-btn print" onclick="printReport()">🖨️ Print Report</button>
+            </div>
+            <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')">Portfolio Overview</button>
+            <button class="tab" onclick="showTab('business')">Business Expenses</button>
+            <button class="tab" onclick="showTab('property1')">Property 1</button>
+            <button class="tab" onclick="showTab('property2')">Property 2</button>
+            <button class="tab" onclick="showTab('property3')">Property 3</button>
+            <button class="tab" onclick="showTab('property4')">Property 4</button>
+        </div>
+        
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Total Monthly Rent</h3>
+                    <div class="amount" id="totalRent">$0</div>
+                </div>
+                <div class="card">
+                    <h3>Property Expenses</h3>
+                    <div class="amount" id="totalPropertyExpenses">$0</div>
+                </div>
+                <div class="card">
+                    <h3>Business Expenses</h3>
+                    <div class="amount" id="totalBusinessExpenses">$0</div>
+                </div>
+                <div class="card">
+                    <h3>Net Monthly Cash Flow</h3>
+                    <div class="amount" id="netCashFlow">$0</div>
+                </div>
+                <div class="card">
+                    <h3>Annual ROI</h3>
+                    <div class="amount" id="annualROI">0%</div>
+                </div>
+            </div>
+            
+            <div class="table-scroll">
+                <table class="overview-table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Address</th>
+                            <th>Monthly Rent</th>
+                            <th>Monthly Expenses</th>
+                            <th>Net Cash Flow</th>
+                            <th>Occupancy Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Property 1</td>
+                            <td><input type="text" placeholder="Enter address" id="addr1"></td>
+                            <td id="rent1">$0</td>
+                            <td id="exp1">$0</td>
+                            <td id="net1">$0</td>
+                            <td><input type="number" min="0" max="100" value="100" id="occ1" onchange="updateOverview()">%</td>
+                        </tr>
+                        <tr>
+                            <td>Property 2</td>
+                            <td><input type="text" placeholder="Enter address" id="addr2"></td>
+                            <td id="rent2">$0</td>
+                            <td id="exp2">$0</td>
+                            <td id="net2">$0</td>
+                            <td><input type="number" min="0" max="100" value="100" id="occ2" onchange="updateOverview()">%</td>
+                        </tr>
+                        <tr>
+                            <td>Property 3</td>
+                            <td><input type="text" placeholder="Enter address" id="addr3"></td>
+                            <td id="rent3">$0</td>
+                            <td id="exp3">$0</td>
+                            <td id="net3">$0</td>
+                            <td><input type="number" min="0" max="100" value="100" id="occ3" onchange="updateOverview()">%</td>
+                        </tr>
+                        <tr>
+                            <td>Property 4</td>
+                            <td><input type="text" placeholder="Enter address" id="addr4"></td>
+                            <td id="rent4">$0</td>
+                            <td id="exp4">$0</td>
+                            <td id="net4">$0</td>
+                            <td><input type="number" min="0" max="100" value="100" id="occ4" onchange="updateOverview()">%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Business Expenses Tab -->
+        <div id="business" class="tab-content">
+            <div class="business-header">
+                <h2>🏢 General Business Expenses</h2>
+            </div>
+            <div class="table-scroll">
+                <table class="business-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Expense Category</th>
+                            <th>Amount & Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Auto Expenses -->
+                        <tr class="category-header">
+                            <td colspan="3"><strong>🚗 AUTO EXPENSES</strong></td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Gas</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('autoGas', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('autoGas', 'frequency', this.value)">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Car Insurance</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('autoInsurance', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('autoInsurance', 'frequency', this.value)">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly" selected>Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Car Maintenance & Repairs</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('autoMaintenance', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('autoMaintenance', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Car Payment/Lease</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('autoPayment', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('autoPayment', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Communication -->
+                        <tr class="category-header">
+                            <td colspan="3"><strong>📱 COMMUNICATION</strong></td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Cell Phone</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('cellPhone', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('cellPhone', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Internet</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('internet', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('internet', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Professional Services -->
+                        <tr class="category-header">
+                            <td colspan="3"><strong>⚖️ PROFESSIONAL SERVICES</strong></td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Legal Fees</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('legal', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('legal', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Accounting/Bookkeeping</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('accounting', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('accounting', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Business Insurance</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('businessInsurance', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('businessInsurance', 'frequency', this.value)">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly" selected>Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>License Fees</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('licenseFees', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('licenseFees', 'frequency', this.value)">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly" selected>Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Other categories abbreviated for space -->
+                        <tr class="expense-row">
+                            <td></td>
+                            <td>Other Business Expenses</td>
+                            <td>
+                                <div class="expense-input-group">
+                                    <input type="number" step="0.01" value="0" onchange="updateBusinessExpense('other', 'amount', this.value)">
+                                    <select onchange="updateBusinessExpense('other', 'frequency', this.value)">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="total-row">
+                            <td colspan="2"><strong>💼 Total Monthly Business Expenses</strong></td>
+                            <td><strong id="businessTotal">$0</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="notes-section">
+                <h3>📝 Business Notes</h3>
+                <textarea placeholder="Add notes about your business expenses, tax deductions, etc."></textarea>
+            </div>
+        </div>
+        
+        <!-- Property Templates -->
+        <div id="property1" class="tab-content">
+            <div class="property-header">
+                <h2>Property 1 Financial Tracking</h2>
+            </div>
+            <div id="property1-content"></div>
+        </div>
+        
+        <div id="property2" class="tab-content">
+            <div class="property-header">
+                <h2>Property 2 Financial Tracking</h2>
+            </div>
+            <div id="property2-content"></div>
+        </div>
+        
+        <div id="property3" class="tab-content">
+            <div class="property-header">
+                <h2>Property 3 Financial Tracking</h2>
+            </div>
+            <div id="property3-content"></div>
+        </div>
+        
+        <div id="property4" class="tab-content">
+            <div class="property-header">
+                <h2>Property 4 Financial Tracking</h2>
+            </div>
+            <div id="property4-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Property data storage with expanded expense categories
+        let propertyData = {
+            1: {
+                rent: {amount: 0, frequency: 'monthly'}, 
+                mortgage: {amount: 0, frequency: 'monthly'}, 
+                taxes: {amount: 0, frequency: 'yearly'}, 
+                insurance: {amount: 0, frequency: 'yearly'},
+                businessInsurance: {amount: 0, frequency: 'yearly'},
+                electric: {amount: 0, frequency: 'monthly'}, 
+                gas: {amount: 0, frequency: 'monthly'}, 
+                water: {amount: 0, frequency: 'monthly'}, 
+                sewer: {amount: 0, frequency: 'monthly'}, 
+                trash: {amount: 0, frequency: 'monthly'}, 
+                wifi: {amount: 0, frequency: 'monthly'}, 
+                cable: {amount: 0, frequency: 'monthly'},
+                lawnMowing: {amount: 0, frequency: 'monthly'}, 
+                landscaping: {amount: 0, frequency: 'monthly'}, 
+                snowRemoval: {amount: 0, frequency: 'yearly'}, 
+                cleaning: {amount: 0, frequency: 'monthly'}, 
+                generalMaintenance: {amount: 0, frequency: 'monthly'}, 
+                appliances: {amount: 0, frequency: 'monthly'}, 
+                hvac: {amount: 0, frequency: 'yearly'}, 
+                plumbing: {amount: 0, frequency: 'monthly'}, 
+                electrical: {amount: 0, frequency: 'monthly'},
+                propertyManagement: {amount: 0, frequency: 'monthly'}, 
+                advertising: {amount: 0, frequency: 'monthly'}, 
+                screening: {amount: 0, frequency: 'monthly'}, 
+                legal: {amount: 0, frequency: 'monthly'},
+                hoa: {amount: 0, frequency: 'monthly'}, 
+                permits: {amount: 0, frequency: 'yearly'}, 
+                licenseFees: {amount: 0, frequency: 'yearly'},
+                vacancy: {amount: 0, frequency: 'monthly'}, 
+                other: {amount: 0, frequency: 'monthly'}
+            },
+            2: {
+                rent: {amount: 0, frequency: 'monthly'}, 
+                mortgage: {amount: 0, frequency: 'monthly'}, 
+                taxes: {amount: 0, frequency: 'yearly'}, 
+                insurance: {amount: 0, frequency: 'yearly'},
+                businessInsurance: {amount: 0, frequency: 'yearly'},
+                electric: {amount: 0, frequency: 'monthly'}, 
+                gas: {amount: 0, frequency: 'monthly'}, 
+                water: {amount: 0, frequency: 'monthly'}, 
+                sewer: {amount: 0, frequency: 'monthly'}, 
+                trash: {amount: 0, frequency: 'monthly'}, 
+                wifi: {amount: 0, frequency: 'monthly'}, 
+                cable: {amount: 0, frequency: 'monthly'},
+                lawnMowing: {amount: 0, frequency: 'monthly'}, 
+                landscaping: {amount: 0, frequency: 'monthly'}, 
+                snowRemoval: {amount: 0, frequency: 'yearly'}, 
+                cleaning: {amount: 0, frequency: 'monthly'}, 
+                generalMaintenance: {amount: 0, frequency: 'monthly'}, 
+                appliances: {amount: 0, frequency: 'monthly'}, 
+                hvac: {amount: 0, frequency: 'yearly'}, 
+                plumbing: {amount: 0, frequency: 'monthly'}, 
+                electrical: {amount: 0, frequency: 'monthly'},
+                propertyManagement: {amount: 0, frequency: 'monthly'}, 
+                advertising: {amount: 0, frequency: 'monthly'}, 
+                screening: {amount: 0, frequency: 'monthly'}, 
+                legal: {amount: 0, frequency: 'monthly'},
+                hoa: {amount: 0, frequency: 'monthly'}, 
+                permits: {amount: 0, frequency: 'yearly'}, 
+                licenseFees: {amount: 0, frequency: 'yearly'},
+                vacancy: {amount: 0, frequency: 'monthly'}, 
+                other: {amount: 0, frequency: 'monthly'}
+            },
+            3: {
+                rent: {amount: 0, frequency: 'monthly'}, 
+                mortgage: {amount: 0, frequency: 'monthly'}, 
+                taxes: {amount: 0, frequency: 'yearly'}, 
+                insurance: {amount: 0, frequency: 'yearly'},
+                businessInsurance: {amount: 0, frequency: 'yearly'},
+                electric: {amount: 0, frequency: 'monthly'}, 
+                gas: {amount: 0, frequency: 'monthly'}, 
+                water: {amount: 0, frequency: 'monthly'}, 
+                sewer: {amount: 0, frequency: 'monthly'}, 
+                trash: {amount: 0, frequency: 'monthly'}, 
+                wifi: {amount: 0, frequency: 'monthly'}, 
+                cable: {amount: 0, frequency: 'monthly'},
+                lawnMowing: {amount: 0, frequency: 'monthly'}, 
+                landscaping: {amount: 0, frequency: 'monthly'}, 
+                snowRemoval: {amount: 0, frequency: 'yearly'}, 
+                cleaning: {amount: 0, frequency: 'monthly'}, 
+                generalMaintenance: {amount: 0, frequency: 'monthly'}, 
+                appliances: {amount: 0, frequency: 'monthly'}, 
+                hvac: {amount: 0, frequency: 'yearly'}, 
+                plumbing: {amount: 0, frequency: 'monthly'}, 
+                electrical: {amount: 0, frequency: 'monthly'},
+                propertyManagement: {amount: 0, frequency: 'monthly'}, 
+                advertising: {amount: 0, frequency: 'monthly'}, 
+                screening: {amount: 0, frequency: 'monthly'}, 
+                legal: {amount: 0, frequency: 'monthly'},
+                hoa: {amount: 0, frequency: 'monthly'}, 
+                permits: {amount: 0, frequency: 'yearly'}, 
+                licenseFees: {amount: 0, frequency: 'yearly'},
+                vacancy: {amount: 0, frequency: 'monthly'}, 
+                other: {amount: 0, frequency: 'monthly'}
+            },
+            4: {
+                rent: {amount: 0, frequency: 'monthly'}, 
+                mortgage: {amount: 0, frequency: 'monthly'}, 
+                taxes: {amount: 0, frequency: 'yearly'}, 
+                insurance: {amount: 0, frequency: 'yearly'},
+                businessInsurance: {amount: 0, frequency: 'yearly'},
+                electric: {amount: 0, frequency: 'monthly'}, 
+                gas: {amount: 0, frequency: 'monthly'}, 
+                water: {amount: 0, frequency: 'monthly'}, 
+                sewer: {amount: 0, frequency: 'monthly'}, 
+                trash: {amount: 0, frequency: 'monthly'}, 
+                wifi: {amount: 0, frequency: 'monthly'}, 
+                cable: {amount: 0, frequency: 'monthly'},
+                lawnMowing: {amount: 0, frequency: 'monthly'}, 
+                landscaping: {amount: 0, frequency: 'monthly'}, 
+                snowRemoval: {amount: 0, frequency: 'yearly'}, 
+                cleaning: {amount: 0, frequency: 'monthly'}, 
+                generalMaintenance: {amount: 0, frequency: 'monthly'}, 
+                appliances: {amount: 0, frequency: 'monthly'}, 
+                hvac: {amount: 0, frequency: 'yearly'}, 
+                plumbing: {amount: 0, frequency: 'monthly'}, 
+                electrical: {amount: 0, frequency: 'monthly'},
+                propertyManagement: {amount: 0, frequency: 'monthly'}, 
+                advertising: {amount: 0, frequency: 'monthly'}, 
+                screening: {amount: 0, frequency: 'monthly'}, 
+                legal: {amount: 0, frequency: 'monthly'},
+                hoa: {amount: 0, frequency: 'monthly'}, 
+                permits: {amount: 0, frequency: 'yearly'}, 
+                licenseFees: {amount: 0, frequency: 'yearly'},
+                vacancy: {amount: 0, frequency: 'monthly'}, 
+                other: {amount: 0, frequency: 'monthly'}
+            }
+        };
+
+        // Business expenses data
+        let businessData = {
+            autoGas: {amount: 0, frequency: 'monthly'}, 
+            autoInsurance: {amount: 0, frequency: 'yearly'}, 
+            autoMaintenance: {amount: 0, frequency: 'monthly'}, 
+            autoPayment: {amount: 0, frequency: 'monthly'},
+            cellPhone: {amount: 0, frequency: 'monthly'}, 
+            internet: {amount: 0, frequency: 'monthly'},
+            legal: {amount: 0, frequency: 'monthly'}, 
+            accounting: {amount: 0, frequency: 'monthly'}, 
+            businessInsurance: {amount: 0, frequency: 'yearly'},
+            licenseFees: {amount: 0, frequency: 'yearly'},
+            other: {amount: 0, frequency: 'monthly'}
+        };
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // If it's a property tab, generate its content
+            if (tabName.startsWith('property')) {
+                const propNum = tabName.slice(-1);
+                generatePropertyContent(propNum);
+            }
+        }
+
+        function generatePropertyContent(propNum) {
+            const content = document.getElementById(`property${propNum}-content`);
+            content.innerHTML = `
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">Income & Expenses</th>
+                                <th>Amount & Frequency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="income-row">
+                                <td colspan="2"><strong>💰 Rental Income</strong></td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].rent.amount}" onchange="updateProperty(${propNum}, 'rent', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'rent', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].rent.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].rent.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Core Expenses -->
+                            <tr class="category-header">
+                                <td colspan="3"><strong>🏠 CORE EXPENSES</strong></td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Mortgage Payment</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].mortgage.amount}" onchange="updateProperty(${propNum}, 'mortgage', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'mortgage', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].mortgage.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].mortgage.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Property Taxes</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].taxes.amount}" onchange="updateProperty(${propNum}, 'taxes', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'taxes', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].taxes.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].taxes.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Property Insurance</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].insurance.amount}" onchange="updateProperty(${propNum}, 'insurance', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'insurance', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].insurance.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].insurance.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Simplified property view for mobile - showing key categories -->
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Lawn Mowing</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].lawnMowing.amount}" onchange="updateProperty(${propNum}, 'lawnMowing', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'lawnMowing', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].lawnMowing.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].lawnMowing.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Electric</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].electric.amount}" onchange="updateProperty(${propNum}, 'electric', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'electric', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].electric.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].electric.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Gas/Oil/Heating</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].gas.amount}" onchange="updateProperty(${propNum}, 'gas', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'gas', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].gas.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].gas.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Water</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].water.amount}" onchange="updateProperty(${propNum}, 'water', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'water', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].water.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].water.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>WiFi/Internet</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].wifi.amount}" onchange="updateProperty(${propNum}, 'wifi', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'wifi', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].wifi.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].wifi.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>General Maintenance</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].generalMaintenance.amount}" onchange="updateProperty(${propNum}, 'generalMaintenance', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'generalMaintenance', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].generalMaintenance.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].generalMaintenance.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Property Management</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].propertyManagement.amount}" onchange="updateProperty(${propNum}, 'propertyManagement', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'propertyManagement', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].propertyManagement.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].propertyManagement.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="expense-row">
+                                <td></td>
+                                <td>Other Expenses</td>
+                                <td>
+                                    <div class="expense-input-group">
+                                        <input type="number" step="0.01" value="${propertyData[propNum].other.amount}" onchange="updateProperty(${propNum}, 'other', 'amount', this.value)">
+                                        <select onchange="updateProperty(${propNum}, 'other', 'frequency', this.value)">
+                                            <option value="monthly" ${propertyData[propNum].other.frequency === 'monthly' ? 'selected' : ''}>Monthly</option>
+                                            <option value="yearly" ${propertyData[propNum].other.frequency === 'yearly' ? 'selected' : ''}>Yearly</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr class="total-row">
+                                <td colspan="2"><strong>💵 Net Monthly Cash Flow</strong></td>
+                                <td><strong id="netflow${propNum}">$0</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>📝 Property Notes</h3>
+                    <textarea placeholder="Add notes about this property (tenant info, maintenance history, etc.)"></textarea>
+                </div>
+            `;
+            
+            calculatePropertyFlow(propNum);
+        }
+
+        function updateProperty(propNum, field, type, value) {
+            if (type === 'amount') {
+                propertyData[propNum][field].amount = parseFloat(value) || 0;
+            } else if (type === 'frequency') {
+                propertyData[propNum][field].frequency = value;
+            }
+            calculatePropertyFlow(propNum);
+            updateOverview();
+        }
+
+        function updateBusinessExpense(field, type, value) {
+            if (type === 'amount') {
+                businessData[field].amount = parseFloat(value) || 0;
+            } else if (type === 'frequency') {
+                businessData[field].frequency = value;
+            }
+            calculateBusinessTotal();
+            updateOverview();
+        }
+
+        function getMonthlyAmount(expenseObject) {
+            if (expenseObject.frequency === 'yearly') {
+                return expenseObject.amount / 12;
+            }
+            return expenseObject.amount;
+        }
+
+        function calculatePropertyFlow(propNum) {
+            const data = propertyData[propNum];
+            let totalExpenses = 0;
+            
+            // Calculate total monthly expenses
+            Object.keys(data).forEach(key => {
+                if (key !== 'rent') {
+                    totalExpenses += getMonthlyAmount(data[key]);
+                }
+            });
+            
+            const monthlyRent = getMonthlyAmount(data.rent);
+            const netFlow = monthlyRent - totalExpenses;
+            
+            const netFlowElement = document.getElementById(`netflow${propNum}`);
+            if (netFlowElement) {
+                netFlowElement.textContent = `$${netFlow.toFixed(2)}`;
+                netFlowElement.style.color = netFlow >= 0 ? 'green' : 'red';
+            }
+        }
+
+        function calculateBusinessTotal() {
+            let total = 0;
+            Object.values(businessData).forEach(expense => {
+                total += getMonthlyAmount(expense);
+            });
+            
+            const totalElement = document.getElementById('businessTotal');
+            if (totalElement) {
+                totalElement.textContent = `$${total.toFixed(2)}`;
+            }
+        }
+
+        function updateOverview() {
+            let totalRent = 0;
+            let totalPropertyExpenses = 0;
+            
+            for (let i = 1; i <= 4; i++) {
+                const data = propertyData[i];
+                const monthlyRent = getMonthlyAmount(data.rent);
+                
+                let monthlyExpenses = 0;
+                Object.keys(data).forEach(key => {
+                    if (key !== 'rent') {
+                        monthlyExpenses += getMonthlyAmount(data[key]);
+                    }
+                });
+                
+                const netFlow = monthlyRent - monthlyExpenses;
+                
+                totalRent += monthlyRent;
+                totalPropertyExpenses += monthlyExpenses;
+                
+                // Update overview table
+                document.getElementById(`rent${i}`).textContent = `$${monthlyRent.toFixed(2)}`;
+                document.getElementById(`exp${i}`).textContent = `$${monthlyExpenses.toFixed(2)}`;
+                const netElement = document.getElementById(`net${i}`);
+                netElement.textContent = `$${netFlow.toFixed(2)}`;
+                netElement.style.color = netFlow >= 0 ? 'green' : 'red';
+            }
+            
+            // Calculate total monthly business expenses
+            let totalBusinessExpenses = 0;
+            Object.values(businessData).forEach(expense => {
+                totalBusinessExpenses += getMonthlyAmount(expense);
+            });
+            
+            const netCashFlow = totalRent - totalPropertyExpenses - totalBusinessExpenses;
+            
+            // Update summary cards
+            document.getElementById('totalRent').textContent = `$${totalRent.toFixed(2)}`;
+            document.getElementById('totalPropertyExpenses').textContent = `$${totalPropertyExpenses.toFixed(2)}`;
+            document.getElementById('totalBusinessExpenses').textContent = `$${totalBusinessExpenses.toFixed(2)}`;
+            
+            const netElement = document.getElementById('netCashFlow');
+            netElement.textContent = `$${netCashFlow.toFixed(2)}`;
+            netElement.parentElement.style.background = netCashFlow >= 0 ? 
+                'linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%)' : 
+                'linear-gradient(135deg, #cb2d3e 0%, #ef473a 100%)';
+            
+            // Calculate annual ROI (simplified - assumes 12 months of current performance)
+            const annualCashFlow = netCashFlow * 12;
+            const estimatedInvestment = totalRent * 100; // Rough estimate for demo purposes
+            const roi = estimatedInvestment > 0 ? (annualCashFlow / estimatedInvestment * 100) : 0;
+            document.getElementById('annualROI').textContent = `${roi.toFixed(1)}%`;
+        }
+
+        // Save/Load Functions
+        function exportData() {
+            const allData = {
+                properties: propertyData,
+                business: businessData,
+                addresses: {
+                    addr1: document.getElementById('addr1')?.value || '',
+                    addr2: document.getElementById('addr2')?.value || '',
+                    addr3: document.getElementById('addr3')?.value || '',
+                    addr4: document.getElementById('addr4')?.value || ''
+                },
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(allData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `rental-property-data-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            alert('✅ Data exported successfully! Save this file as backup.');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (importedData.properties) {
+                        propertyData = importedData.properties;
+                    }
+                    if (importedData.business) {
+                        businessData = importedData.business;
+                    }
+                    if (importedData.addresses) {
+                        Object.keys(importedData.addresses).forEach(key => {
+                            const element = document.getElementById(key);
+                            if (element) {
+                                element.value = importedData.addresses[key];
+                            }
+                        });
+                    }
+                    
+                    // Refresh all calculations and displays
+                    updateOverview();
+                    calculateBusinessTotal();
+                    
+                    // Refresh current property tab if open
+                    const activeTab = document.querySelector('.tab.active');
+                    if (activeTab && activeTab.textContent.includes('Property')) {
+                        const propNum = activeTab.textContent.match(/\d+/)[0];
+                        generatePropertyContent(propNum);
+                    }
+                    
+                    alert('✅ Data imported successfully!');
+                } catch (error) {
+                    alert('❌ Error importing file. Please check the file format.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        // Initialize the first property tab content and calculations
+        generatePropertyContent(1);
+        calculateBusinessTotal();
+        updateOverview();
+    </script>
+</body>
+</html>
